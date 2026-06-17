@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Екза́мен · Уроки 9–16 · Ру́сский язы́к</title>
+<title>Экза́мен · Уроки 9–16 · Ру́сский язы́к</title>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init('fcPVwgpMK7uXx_D3B');</script>
 <style>
@@ -1049,21 +1049,95 @@ function rebuildOrd(n){
 function checkOrd(n){
   if(done[n]) return;
   const s=ordState[n];
-  const ok=JSON.stringify(s.zone.map(norm))===JSON.stringify(s.correct.map(norm));
+  const zn=s.zone.map(norm), cn=s.correct.map(norm);
+  const ok=JSON.stringify(zn)===JSON.stringify(cn);
   const zone=document.getElementById('oz'+n);
   zone.classList.add(ok?'ok-zone':'bad-zone');
   const fb=document.getElementById('of'+n);
   const sol=document.getElementById('os'+n);
-  if(ok){
-    fb.textContent='✅ Пра́вильно! · Correct! · 正確！· 正解！'; fb.className='ord-feedback good';
-  } else {
-    fb.textContent='❌ Пра́вильный поря́док:'; fb.className='ord-feedback bad';
-    sol.textContent=s.correct.join(' — '); sol.style.display='block';
-  }
   document.querySelectorAll('#oz'+n+' .w-chip,#op'+n+' .w-chip').forEach(c=>c.disabled=true);
-  let correct=0;
-  s.zone.forEach((w,i)=>{ if(i<s.correct.length&&norm(w)===norm(s.correct[i])) correct++; });
-  award(n,ok?7:Math.min(5,Math.round((correct/s.correct.length)*7)),7);
+
+  let pts=0;
+
+  if(n===6){
+    // Days of week: cyclic scoring
+    // Full correct sequence = 7 pts
+    // If all 7 placed AND sequence is cyclically correct (starts anywhere, goes in order) = pts based on offset
+    // offset 0 = 7, offset 1 (вторник→понедельник) = 6, offset 2 = 5, ..., offset 6 = 1
+    // If not all 7 placed, or not cyclically correct = positional partial credit (max 3)
+    if(ok){
+      pts=7;
+      fb.textContent='✅ Пра́вильно! · Correct! · 正確！· 正解！'; fb.className='ord-feedback good';
+    } else if(zn.length===cn.length){
+      // Check cyclic match: find offset where zn[i] === cn[(i+offset) % len]
+      const len=cn.length;
+      let bestOffset=-1;
+      for(let off=0;off<len;off++){
+        if(zn.every((w,i)=>w===cn[(i+off)%len])){bestOffset=off;break;}
+      }
+      if(bestOffset>0){
+        // Cyclically correct but starts at wrong day
+        pts=Math.max(1, 7-bestOffset);
+        const startDay=s.correct[bestOffset]; // the day they started from
+        fb.textContent=`⚠ Поря́док ве́рный, но начина́ется с «${startDay}» (не с понеде́льника). · Order correct but starts from «${startDay}» instead of Monday. · 順序正確但從「${startDay}」開始。 → ${pts}/7`;
+        fb.className='ord-feedback bad';
+        sol.textContent='Пра́вильно: '+s.correct.join(' → '); sol.style.display='block';
+      } else {
+        // Not cyclically correct — positional partial credit
+        let posCorrect=0;
+        zn.forEach((w,i)=>{ if(w===cn[i]) posCorrect++; });
+        pts=Math.min(3,Math.round((posCorrect/len)*7));
+        fb.textContent=`❌ Пра́вильный поря́док · Correct order:`; fb.className='ord-feedback bad';
+        sol.textContent=s.correct.join(' → '); sol.style.display='block';
+      }
+    } else {
+      // Not all days placed — positional partial, max 3
+      let posCorrect=0;
+      zn.forEach((w,i)=>{ if(i<cn.length&&w===cn[i]) posCorrect++; });
+      pts=Math.min(3,Math.round((posCorrect/cn.length)*7));
+      fb.textContent='❌ Пра́вильный поря́док · Correct order:'; fb.className='ord-feedback bad';
+      sol.textContent=s.correct.join(' → '); sol.style.display='block';
+    }
+  } else {
+    // Months (task 8): cyclic offset + error-count scoring
+    if(ok){
+      pts=7;
+      fb.textContent='✅ Пра́вильно! · Correct! · 正確！· 正解！'; fb.className='ord-feedback good';
+    } else if(zn.length===cn.length){
+      const len=cn.length;
+      // 1) Check cyclic offset (correct order, wrong start month)
+      let bestOffset=-1;
+      for(let off=0;off<len;off++){
+        if(zn.every((w,i)=>w===cn[(i+off)%len])){bestOffset=off;break;}
+      }
+      if(bestOffset>0){
+        // Cyclically correct: offset 1 (с февраля) = 6, offset 2 (с марта) = 5, …, min 1
+        pts=Math.max(1, 7-bestOffset);
+        const startMonth=s.correct[bestOffset];
+        fb.textContent=`⚠ Поря́док ве́рный, но начина́ется с «${startMonth}» (не с января́). · Order correct but starts from «${startMonth}» instead of January. · 順序正確但從「${startMonth}」開始。 → ${pts}/7`;
+        fb.className='ord-feedback bad';
+        sol.textContent='Пра́вильно: '+s.correct.join(' → '); sol.style.display='block';
+      } else {
+        // 2) Not cyclic — count positional errors (mismatches)
+        // errors = number of positions where zn[i] !== cn[i]
+        let errors=0;
+        zn.forEach((w,i)=>{ if(w!==cn[i]) errors++; });
+        // 0 errors = 7 (handled above), 1 error = 6, 2 errors = 5, …, 7+ errors = 0
+        pts=Math.max(0, 7-errors);
+        fb.textContent=`❌ Оши́бок: ${errors}. Пра́вильный поря́док:`; fb.className='ord-feedback bad';
+        sol.textContent=s.correct.join(' — '); sol.style.display='block';
+      }
+    } else {
+      // Not all months placed — 1 pt per correct position, max 5
+      let correct=0;
+      zn.forEach((w,i)=>{ if(i<cn.length&&w===cn[i]) correct++; });
+      pts=Math.min(5,correct);
+      fb.textContent='❌ Пра́вильный поря́док:'; fb.className='ord-feedback bad';
+      sol.textContent=s.correct.join(' — '); sol.style.display='block';
+    }
+  }
+
+  award(n,pts,7);
 }
 initOrd(6,daysNom);
 initOrd(8,months);
@@ -1194,17 +1268,51 @@ function submitExam(){
   document.getElementById('submitBtn').disabled=true;
   fc.scrollIntoView({behavior:'smooth',block:'center'});
 
-  const breakdown=Object.entries(scores).map(([n,s])=>`Задание ${n}: ${s}/7`).join('\n');
-  const fullBody=`Экзамен: Русский язык, Уроки 9–16
-Имя: ${name} (рус.: ${ruName})
-ID: ${id}
-Email: ${email}
-Примечания: ${notes}
-Результат: ${t}/${MAX} (${pct}%)
+  const taskNames = {
+    1:'Словарь RU→перевод (уроки 13–15)',
+    2:'Словарь перевод→RU (урок 16)',
+    3:'Пары слов (уроки 13–14)',
+    4:'Пары слов (уроки 15–16)',
+    5:'Грамматический род',
+    6:'Дни недели по порядку',
+    7:'«В...» + действие (урок 13)',
+    8:'Месяцы по порядку',
+    9:'Месяц → «в/во + месяц»',
+    10:'Составь фразу (4 фразы)',
+  };
+
+  const sep = '─'.repeat(36);
+  const now = new Date().toLocaleString('zh-TW', {timeZone:'Asia/Taipei'});
+
+  const breakdownLines = Object.entries(scores)
+    .map(([n,s]) => `Задание ${n} — ${taskNames[n]}: ${s} / 7`)
+    .join('\n\n');
+
+  const fullBody =
+`Уважаемый/ая ${name}
+
+俄語名: ${ruName}
+學號: ${id}
+
+Ваш результат / Your score / 您的成績:
+★  ${t} / ${MAX}  (${pct}%)  ★
 Оценка: ${grade}
 
-Баллы по заданиям:
-${breakdown}`;
+${sep}
+Детали / Details / 各題得分:
+${sep}
+
+${Object.entries(scores).map(([n,s]) => `Задание ${n} — ${taskNames[n]}: ${s} / 7`).join('\n\n')}
+
+${sep}
+ИТОГО / TOTAL / 總分: ${t} / ${MAX}
+${sep}
+
+Примечания студента / Notes: ${notes}
+
+Время подачи / 提交時間: ${now}
+
+Ру́сский язы́к · Уро́ки 9–16 · 中原大學`;
 
   sendViaEmailJS({
     student_name: name,
@@ -1212,12 +1320,12 @@ ${breakdown}`;
     student_email: email,
     russian_name: ruName,
     notes: notes,
-    total_score: `${t} / ${MAX} (${pct}%)`,
+    total_score: `${t} / ${MAX} (${pct}%) — ${grade}`,
     grade: grade,
-    breakdown: breakdown,
+    breakdown: breakdownLines,
     full_body: fullBody,
-    to_email: 'collegeorient@gmail.com',
-    cc_email: email,
+    to_email: email,
+    cc_email: 'collegeorient@gmail.com',
   });
 }
 
