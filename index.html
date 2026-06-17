@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Екза́мен · Уроки 9–16 · Ру́сский язы́к</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('fcPVwgpMK7uXx_D3B');</script>
+<style>
+:root{
+  --bg:#FBF7F0;--card:#FFFFFF;--terra:#B85042;--terra-dark:#9c4133;
+  --clay:#A7592E;--sage:#5C8374;--sage-dark:#456256;--sand:#F3EDE2;
+  --orange:#C0683E;--gold:#D98E04;--muted:#7A6A5C;--ink:#3a3128;
+  --ink-soft:#7A6A5C;--line:#E8DDD0;--green:#3d8a52;--green-soft:#dff0e6;
+  --red-soft:#f8e4df;--radius:18px;--shadow:0 3px 14px rgba(120,80,50,.13);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:Tahoma,Verdana,Arial,"Noto Sans TC","Noto Sans JP","Microsoft JhengHei","PingFang TC",sans-serif;
+  background:var(--bg);
+  background-image:radial-gradient(circle at 10% 8%,#FFF4D9 0,transparent 28%),radial-gradient(circle at 88% 90%,#EDE0D4 0,transparent 35%);
+  color:var(--ink);min-height:100vh;padding:14px 12px 60px;
+}
+.wrap{max-width:900px;margin:0 auto}
+
+/* HEADER */
+header{
+  background:linear-gradient(120deg,var(--terra) 0%,#7A3020 100%);
+  color:#FFF8F5;border-radius:22px;padding:20px 22px 16px;
+  box-shadow:var(--shadow);margin-bottom:12px;
+}
+header h1{font-size:1.4rem;letter-spacing:.3px}
+header .sub{margin-top:6px;font-size:.82rem;opacity:.93;line-height:1.75}
+
+/* TIMER */
+.timer-bar{
+  background:linear-gradient(120deg,#5a1e10,#7A3020);
+  border-radius:14px;padding:10px 20px;margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  box-shadow:var(--shadow);
+}
+.timer-label{color:#FFD9CC;font-size:.78rem;font-weight:700}
+.timer-display{
+  font-size:1.6rem;font-weight:700;color:#FFF;
+  letter-spacing:2px;font-variant-numeric:tabular-nums;
+  background:rgba(0,0,0,.25);border-radius:10px;padding:4px 16px;
+}
+.timer-display.warn{color:#FFD066}
+.timer-display.urgent{color:#FF8066;animation:pulse .7s infinite alternate}
+@keyframes pulse{from{opacity:1}to{opacity:.55}}
+.timer-msg{color:#FFD9CC;font-size:.78rem;flex:1;text-align:right}
+
+/* STUDENT FORM */
+.stu-form{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:18px 18px 20px;margin-bottom:18px;border-top:4px solid var(--gold);
+}
+.stu-form h2{font-size:.95rem;color:var(--terra);margin-bottom:12px;font-weight:700}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.field-row.single{grid-template-columns:1fr}
+.field label{display:block;font-size:.74rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.field input,.field textarea{
+  width:100%;border:2px solid var(--line);border-radius:10px;
+  padding:9px 12px;font-size:.9rem;font-family:inherit;
+  background:#FFFDFA;color:var(--ink);transition:.15s;
+}
+.field textarea{resize:vertical;min-height:54px}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--terra)}
+.field input.err{border-color:var(--orange)}
+
+/* SCOREBOARD */
+.scoreboard{
+  background:var(--card);border-radius:16px;box-shadow:var(--shadow);
+  padding:12px 18px;margin-bottom:18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.total-score{font-size:1.75rem;font-weight:700;color:var(--terra)}
+.score-bar{flex:1 1 200px;height:10px;background:var(--line);border-radius:999px;overflow:hidden}
+.score-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:999px;transition:width .4s}
+
+/* TASK */
+.task{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:20px 18px 22px;margin-bottom:18px;border-top:5px solid var(--terra);
+}
+.task-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.task-num{
+  background:var(--terra);color:#fff;border-radius:50%;
+  width:36px;height:36px;min-width:36px;font-size:1rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.task-title{flex:1}
+.task-title h2{font-size:1rem;color:var(--terra);margin-bottom:2px}
+.task-title .ml{font-size:.77rem;color:var(--ink-soft);line-height:1.65}
+.task-pts{
+  background:var(--sand);border:1.5px solid var(--line);border-radius:999px;
+  padding:4px 12px;font-size:.8rem;font-weight:700;color:var(--clay);white-space:nowrap;flex-shrink:0;
+}
+.task-pts.earned{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+
+/* INSTR */
+.instr{
+  background:#FDF0EB;border-left:5px solid var(--terra);border-radius:10px;
+  padding:9px 12px;font-size:.79rem;line-height:1.65;color:var(--ink-soft);margin-bottom:14px;
+}
+.instr b{color:var(--ink)}
+
+/* MC */
+.qcard{
+  background:linear-gradient(135deg,#FDF3EE,#FBF7F0);border:2px solid #E8D0C4;
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;text-align:center;
+}
+.qcard .q-ru{font-size:1.25rem;font-weight:700;color:#7A2A18;margin-bottom:4px}
+.qcard .q-sub{font-size:.78rem;color:var(--ink-soft);line-height:1.5}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px}
+.ans{
+  border:2px solid var(--line);background:#FCFFF9;border-radius:13px;
+  padding:11px 13px;text-align:left;cursor:pointer;font-size:.86rem;
+  line-height:1.5;transition:.15s;font-family:inherit;
+}
+.ans:hover{border-color:var(--terra)}
+.ans .ruA{font-size:.95rem;font-weight:700;color:#7A2A18}
+.ans .gl{font-size:.75rem;color:var(--ink-soft);margin-top:2px}
+.ans.correct{background:var(--green-soft);border-color:var(--green)}
+.ans.wrong{background:var(--red-soft);border-color:var(--orange)}
+.ans:disabled{cursor:default;opacity:.95}
+.feedback{margin-top:10px;font-weight:700;font-size:.88rem;min-height:1.4em;line-height:1.6}
+.feedback.good{color:var(--green)}.feedback.bad{color:var(--orange)}
+
+/* MATCHING */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.chip-btn{
+  background:var(--sand);border:1.5px solid var(--clay);border-radius:10px;
+  padding:10px 13px;font-size:.88rem;cursor:pointer;font-family:inherit;
+  text-align:left;transition:background .15s;line-height:1.4;
+}
+.chip-btn:hover{background:#ece1cf}
+.chip-btn.ru-chip{font-weight:700;color:var(--terra)}
+.chip-btn.tr-chip{color:var(--sage-dark)}
+.chip-btn.selected{background:var(--gold);color:#fff;border-color:var(--gold)}
+.chip-btn.matched{background:var(--green-soft);border-color:var(--green);color:var(--sage-dark);cursor:default;pointer-events:none;opacity:.75}
+.chip-btn.zh-chip{color:var(--sage-dark);font-weight:600}
+.chip-btn.zh-chip.selected{background:var(--gold);color:#fff;border-color:var(--gold)}
+.chip-btn.zh-chip.matched{background:var(--green-soft);border-color:var(--green);color:var(--sage-dark)}
+.match-status{margin-top:10px;font-size:.87rem;color:var(--clay);min-height:20px;font-weight:700}
+
+/* GENDER */
+.gender-bank{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.gender-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+.gender-col{
+  background:#F9F4EE;border:2px dashed var(--line);border-radius:14px;
+  padding:12px 10px;min-height:90px;cursor:pointer;transition:border-color .2s;
+}
+.gender-col:hover{border-color:var(--terra)}
+.gender-col.col-active{border-color:var(--gold);background:#FFFBF0}
+.gender-col h3{font-size:.8rem;font-weight:700;color:var(--terra);margin-bottom:8px;text-align:center;pointer-events:none}
+.gender-drop{min-height:44px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.g-bank-word{
+  background:#FFF3D6;border:2px solid #E8D0C4;border-radius:999px;
+  padding:7px 13px;font-size:.9rem;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:.12s;color:var(--ink);user-select:none;
+}
+.g-bank-word:hover{border-color:var(--terra)}
+.g-bank-word.gsel{background:var(--gold);color:#fff;border-color:var(--gold)}
+.g-bank-word.gplaced{opacity:.35;pointer-events:none}
+.g-col-word{
+  background:#F3E8E4;border:1.5px solid #D4A898;border-radius:999px;
+  padding:5px 11px;font-size:.84rem;font-weight:600;color:var(--ink);
+  display:inline-block;pointer-events:auto;cursor:pointer;
+}
+.g-col-word:hover{background:var(--red-soft)}
+.g-col-word.correct-g{background:var(--green-soft);border-color:var(--green);color:var(--sage-dark)}
+.g-col-word.wrong-g{background:var(--red-soft);border-color:var(--orange);color:var(--orange)}
+
+/* ORDER */
+.ord-zone{
+  min-height:52px;border:2px dashed var(--terra);border-radius:12px;
+  padding:9px;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;
+  margin-bottom:9px;background:#FFFAF8;transition:border-color .2s;
+}
+.ord-zone.empty::before{content:attr(data-hint);color:#C8A898;font-size:.78rem;align-self:center}
+.ord-zone.ok-zone{border-color:var(--sage);background:var(--green-soft)}
+.ord-zone.bad-zone{border-color:var(--orange);background:var(--red-soft)}
+.ord-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px;min-height:44px}
+.w-chip{
+  border:2px solid #E8D0C4;background:#FFF3D6;color:var(--ink);
+  border-radius:999px;padding:7px 12px;font-size:.88rem;font-weight:600;
+  cursor:pointer;transition:.12s;font-family:inherit;
+}
+.w-chip:hover{border-color:var(--terra);transform:translateY(-1px)}
+.ord-zone .w-chip{background:#F3E8E4;border-color:#D4A898}
+.ord-solution{
+  margin-top:7px;padding:8px 12px;background:var(--green-soft);
+  border-radius:10px;font-size:.88rem;font-weight:700;
+  color:var(--sage-dark);line-height:1.6;display:none;
+}
+.ord-feedback{margin-top:7px;font-weight:700;font-size:.88rem;min-height:1.3em}
+.ord-feedback.good{color:var(--green)}.ord-feedback.bad{color:var(--orange)}
+
+/* MONTH READING */
+.month-reading{
+  background:linear-gradient(135deg,#FDF3EE,#FBF7F0);border:2px solid #E8D0C4;
+  border-radius:16px;padding:16px 18px;margin-bottom:14px;line-height:1.9;
+}
+.month-reading p{font-size:.92rem;color:#3a2010;margin-bottom:2px}
+.month-hl{font-weight:700;color:var(--terra)}
+
+/* PHRASE BUILDER */
+.phrase-target{
+  background:linear-gradient(135deg,#FDF3EE,#FBF7F0);
+  border:2px solid #E8D0C4;border-radius:14px;
+  padding:13px 15px;margin-bottom:10px;
+}
+.phrase-target .pt-zh{font-size:.98rem;font-weight:700;color:#7A2A18;margin-bottom:2px}
+.phrase-target .pt-en{font-size:.81rem;color:var(--ink-soft);font-style:italic;margin-bottom:1px}
+.phrase-target .pt-jp{font-size:.81rem;color:var(--sage-dark)}
+
+/* BUTTONS */
+.btn{
+  border:none;border-radius:999px;cursor:pointer;
+  font-size:.9rem;font-weight:700;padding:9px 22px;
+  background:var(--terra);color:#FFF;box-shadow:var(--shadow);
+  transition:.15s;font-family:inherit;
+}
+.btn:hover{background:var(--terra-dark)}
+.btn.ghost{background:#FFF;color:var(--terra);border:2px solid var(--terra)}
+.btn:disabled{opacity:.45;cursor:default}
+.btnrow{display:flex;gap:10px;justify-content:center;margin-top:13px;flex-wrap:wrap}
+
+/* SUBMIT */
+.submit-row{text-align:center;margin:24px 0 8px}
+.submit-btn{
+  border:none;border-radius:999px;cursor:pointer;font-size:1.05rem;font-weight:700;
+  padding:14px 44px;background:linear-gradient(120deg,var(--terra),var(--clay));
+  color:#FFF;box-shadow:var(--shadow);transition:.15s;font-family:inherit;
+}
+.submit-btn:hover{filter:brightness(1.1)}
+.submit-btn:disabled{opacity:.45;cursor:default}
+
+/* FINAL */
+.final-card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:30px 20px;text-align:center;margin-top:18px;display:none;
+}
+.final-card.shown{display:block}
+.final-emoji{font-size:3.5rem;margin-bottom:8px}
+.final-score{font-size:2.4rem;font-weight:700;color:var(--terra);margin:6px 0}
+.grade-badge{
+  display:inline-block;font-size:1.2rem;font-weight:700;
+  background:linear-gradient(135deg,var(--terra),var(--clay));
+  color:#fff;border-radius:14px;padding:8px 24px;margin:10px 0;box-shadow:var(--shadow);
+}
+.final-msg{font-size:.9rem;color:var(--ink-soft);line-height:1.8;margin-top:8px}
+.send-status{
+  margin-top:14px;font-size:.86rem;font-weight:700;
+  padding:10px 18px;border-radius:12px;display:none;
+}
+.send-status.ok{background:var(--green-soft);color:var(--green)}
+.send-status.err{background:var(--red-soft);color:var(--orange)}
+
+footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);line-height:1.75}
+
+/* TIME'S UP overlay */
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(60,20,10,.82);
+  z-index:999;align-items:center;justify-content:center;flex-direction:column;
+}
+.overlay.shown{display:flex}
+.overlay-box{
+  background:var(--card);border-radius:22px;padding:34px 32px;text-align:center;
+  max-width:400px;box-shadow:0 8px 40px rgba(0,0,0,.4);
+}
+.overlay-box h2{color:var(--terra);font-size:1.5rem;margin-bottom:10px}
+.overlay-box p{color:var(--ink-soft);font-size:.9rem;line-height:1.7;margin-bottom:16px}
+
+@media(max-width:620px){
+  header h1{font-size:1.1rem}
+  .field-row{grid-template-columns:1fr}
+  .answers{grid-template-columns:1fr}
+  .match-wrap{grid-template-columns:1fr}
+  .gender-cols{grid-template-columns:1fr}
+  .w-chip{font-size:.8rem;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- TIME'S UP OVERLAY -->
+<div class="overlay" id="timesUpOverlay">
+  <div class="overlay-box">
+    <div style="font-size:2.8rem">⏱</div>
+    <h2>Вре́мя вы́шло! · Time's Up! · 時間到！· 時間切れ！</h2>
+    <p>
+      Экза́мен автомати́чески отправля́ется.<br>
+      The exam is being submitted automatically.<br>
+      考卷正在自動提交。<br>
+      試験は自動的に提出されます。
+    </p>
+    <button class="btn" onclick="document.getElementById('timesUpOverlay').classList.remove('shown')">OK</button>
+  </div>
+</div>
+
+<header>
+  <h1>📝 Семестровый экза́мен · Semester Exam · 學期考試 · 期末試験</h1>
+  <div class="sub">
+    Ру́сский язы́к · Уро́ки 9–16 · Russian Language · 俄語 · ロシア語<br>
+    10 зада́ний · 70 балло́в · 10 questions · 70 points · 10題 · 70分
+  </div>
+</header>
+
+<!-- TIMER -->
+<div class="timer-bar">
+  <span class="timer-label">⏱ Вре́мя · Time · 時間 · 時間</span>
+  <span class="timer-display" id="timerDisplay">60:00</span>
+  <span class="timer-msg" id="timerMsg">Мо́жно возвраща́ться к зада́ниям · You may revise answers · 可以修改答案</span>
+</div>
+
+<!-- STUDENT INFO -->
+<div class="stu-form">
+  <h2>👤 Да́нные студе́нта · Student Information · 學生資料 · 受験者情報</h2>
+  <div class="field-row">
+    <div class="field">
+      <label>姓名 · Full Name · お名前 *</label>
+      <input id="stuName" type="text" placeholder="e.g. 田中太郎 / Tanaka Taro">
+    </div>
+    <div class="field">
+      <label>學號 · Student ID · 学籍番号 *</label>
+      <input id="stuId" type="text" placeholder="e.g. S1234567">
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label>Ру́сское и́мя · Russian Name · 俄語名 · ロシア語名</label>
+      <input id="stuRuName" type="text" placeholder="e.g. Таро">
+    </div>
+    <div class="field">
+      <label>Email студе́нта · Student Email · 學生信箱 · メールアドレス *</label>
+      <input id="stuEmail" type="email" placeholder="your@email.com">
+    </div>
+  </div>
+  <div class="field-row single">
+    <div class="field">
+      <label>Приме́чания · Notes · 備註（可選）· 備考（任意）</label>
+      <textarea id="stuNotes" placeholder="Optional notes · 選填備註 · 任意記入…"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="scoreboard">
+  <div>
+    <div style="font-size:.77rem;color:var(--muted);font-weight:700">Счёт · Score · 得分 · 得点</div>
+    <div class="total-score" id="totalDisplay">0 / 70</div>
+  </div>
+  <div style="flex:1 1 200px">
+    <div class="score-bar"><i id="scoreBarFill" style="width:0%"></i></div>
+    <div style="font-size:.8rem;font-weight:700;color:var(--ink-soft);margin-top:5px" id="scorePercent">0%</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 1 · Vocabulary MC: RU → ZH/EN/JP
+══════════════════════════════════════════ -->
+<div class="task" id="task1">
+  <div class="task-header">
+    <div class="task-num">1</div>
+    <div class="task-title">
+      <h2>Слова́: ру́сский → перево́д · RU → Translation · 俄語→翻譯 · ロシア語→意味</h2>
+      <div class="ml">Уро́ки 13–15 · Выберите пра́вильное значе́ние · Choose the correct meaning</div>
+    </div>
+    <div class="task-pts" id="pts1">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Вы́берите пра́вильный пе́ревод ру́сского сло́ва. ·
+    <b>EN:</b> Choose the correct translation of the Russian word. ·
+    <b>中文：</b>選出俄語單詞的正確翻譯。 · <b>日本語：</b>ロシア語の正しい意味を選んでください。
+  </div>
+  <div id="mc1body"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkMCTask(1)">✔ Прове́рить · Check · 送出 · 確認</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 2 · Vocabulary MC: ZH/EN/JP → RU
+══════════════════════════════════════════ -->
+<div class="task" id="task2">
+  <div class="task-header">
+    <div class="task-num">2</div>
+    <div class="task-title">
+      <h2>Слова́: перево́д → ру́сский · Translation → RU · 翻譯→俄語 · 意味→ロシア語</h2>
+      <div class="ml">Уро́к 16 · Глаго́лы · Verbs · 動詞 · 動詞</div>
+    </div>
+    <div class="task-pts" id="pts2">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> По переводу на китайском, английском и японском выберите ру́сское сло́во. ·
+    <b>EN:</b> Given the Chinese, English and Japanese meaning, choose the Russian word. ·
+    <b>中文：</b>根據中英日文意思，選出對應的俄語單詞。 ·
+    <b>日本語：</b>中国語・英語・日本語の意味からロシア語を選んでください。
+  </div>
+  <div id="mc2body"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkMCTask(2)">✔ Прове́рить · Check · 送出 · 確認</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 3 · Matching: уроки 13–14
+══════════════════════════════════════════ -->
+<div class="task" id="task3">
+  <div class="task-header">
+    <div class="task-num">3</div>
+    <div class="task-title">
+      <h2>Па́ры: уро́ки 13–14 · Matching: Lessons 13–14 · 配對：第13–14課 · マッチング：第13〜14課</h2>
+      <div class="ml">Нажми́те ру́сское сло́во → потом его перево́д · Tap Russian word → then its translation</div>
+    </div>
+    <div class="task-pts" id="pts3">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите ру́сское сло́во, зате́м его перево́д — соедините в па́ру. ·
+    <b>EN:</b> Tap a Russian word, then its translation to make a pair. ·
+    <b>中文：</b>先點俄語單詞，再點對應翻譯，配成一對。 ·
+    <b>日本語：</b>ロシア語の単語をタップし、次にその訳をタップしてペアにしてください。
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m3ru"></div><div class="match-col" id="m3tr"></div></div>
+  <div class="match-status" id="m3status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(3)">↺ Сно́ва · Reset · 重置 · リセット</button>
+    <button class="btn" id="m3check" onclick="submitMatch(3)" style="display:none">✔ Прове́рить · Check · 送出 · 確認</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 4 · Matching: уроки 15–16
+══════════════════════════════════════════ -->
+<div class="task" id="task4">
+  <div class="task-header">
+    <div class="task-num">4</div>
+    <div class="task-title">
+      <h2>Па́ры: уро́ки 15–16 · Matching: Lessons 15–16 · 配對：第15–16課 · マッチング：第15〜16課</h2>
+      <div class="ml">Чекова́я лотере́я + «Студе́нт в Москве́» · Receipt lottery + Student in Moscow</div>
+    </div>
+    <div class="task-pts" id="pts4">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите ру́сское сло́во, зате́м его перево́д. ·
+    <b>EN:</b> Tap a Russian word, then its translation. ·
+    <b>中文：</b>先點俄語詞，再點翻譯。 ·
+    <b>日本語：</b>ロシア語と翻訳をペアにしてください。
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m4ru"></div><div class="match-col" id="m4tr"></div></div>
+  <div class="match-status" id="m4status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(4)">↺ Сно́ва · Reset · 重置 · リセット</button>
+    <button class="btn" id="m4check" onclick="submitMatch(4)" style="display:none">✔ Прове́рить · Check · 送出 · 確認</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 5 · Грамматический род
+══════════════════════════════════════════ -->
+<div class="task" id="task5">
+  <div class="task-header">
+    <div class="task-num">5</div>
+    <div class="task-title">
+      <h2>Граммати́ческий род · Grammatical Gender · 語法性別 · 文法的な性</h2>
+      <div class="ml">Мужско́й (он) · Же́нский (она́) · Сре́дний (оно́)</div>
+    </div>
+    <div class="task-pts" id="pts5">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> <b>① Нажмите сло́во</b> (оно подсве́тится золоты́м). <b>② Нажмите ну́жный столби́к</b> (он/она́/оно́) — сло́во перейдёт туда. Нажмите сло́во в столби́ке, чтобы убра́ть его обра́тно. ·
+    <b>EN:</b> <b>① Tap a word</b> (it turns gold). <b>② Tap the correct column</b> (м/ж/ср) — the word moves there. Tap it in the column to return it. ·
+    <b>中文：</b><b>①點單詞</b>（變金色）。<b>②點對應性別欄</b>——單詞移入。點欄內單詞可移回。 ·
+    <b>日本語：</b><b>①単語をタップ</b>（金色になる）。<b>②正しい列をタップ</b>——単語が移動します。列内の単語をタップすると戻ります。
+  </div>
+  <div class="gender-bank" id="g5bank"></div>
+  <div class="gender-cols">
+    <div class="gender-col" id="gcol-m" onclick="gColClick('m')">
+      <h3>♂ Мужско́й<br><span style="font-size:.7rem;font-weight:400;color:var(--muted)">он · 陽性 · 男性名詞</span></h3>
+      <div class="gender-drop" id="gdrop-m"></div>
+    </div>
+    <div class="gender-col" id="gcol-f" onclick="gColClick('f')">
+      <h3>♀ Же́нский<br><span style="font-size:.7rem;font-weight:400;color:var(--muted)">она́ · 陰性 · 女性名詞</span></h3>
+      <div class="gender-drop" id="gdrop-f"></div>
+    </div>
+    <div class="gender-col" id="gcol-n" onclick="gColClick('n')">
+      <h3>⚬ Сре́дний<br><span style="font-size:.7rem;font-weight:400;color:var(--muted)">оно́ · 中性 · 中性名詞</span></h3>
+      <div class="gender-drop" id="gdrop-n"></div>
+    </div>
+  </div>
+  <div class="feedback" id="fb5"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkGender()">✔ Прове́рить · Check · 送出 · 確認</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 6 · Дни недели по порядку (Им.п.)
+══════════════════════════════════════════ -->
+<div class="task" id="task6">
+  <div class="task-header">
+    <div class="task-num">6</div>
+    <div class="task-title">
+      <h2>Дни неде́ли по поря́дку · Days in Order · 星期順序 · 曜日の順番</h2>
+      <div class="ml">Имени́тельный паде́ж · Nominative form · 主格 · 月曜〜日曜</div>
+    </div>
+    <div class="task-pts" id="pts6">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Расставьте дни неде́ли от понеде́льника (1) до воскресе́нья (7). Нажмите сло́во ни́же — перейдёт в отве́т. Нажмите в отве́те — вернётся. ·
+    <b>EN:</b> Put the days Monday (1) → Sunday (7). Tap below to add, tap in answer to remove. ·
+    <b>中文：</b>將星期從一（1）排到日（7）。點下方加入，點答案欄移回。 ·
+    <b>日本語：</b>月曜日（1）から日曜日（7）の順に並べてください。
+  </div>
+  <div class="ord-zone empty" id="oz6" data-hint="← 點下方星期 / Tap days below / Нажима́йте дни ни́же"></div>
+  <div class="ord-pool" id="op6"></div>
+  <div class="ord-feedback" id="of6"></div>
+  <div class="ord-solution" id="os6"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkOrd(6)">✔ Прове́рить · Check · 送出 · 確認</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 7 · «В...» + действие (текст ZH+JP)
+══════════════════════════════════════════ -->
+<div class="task" id="task7">
+  <div class="task-header">
+    <div class="task-num">7</div>
+    <div class="task-title">
+      <h2>«В ...» + де́йствие · «В...» + Activity · 「在星期…」＋活動 · 「В＋曜日」＋行動</h2>
+      <div class="ml">Уро́к 13 · Прочитайте текст и соедините дни с действиями</div>
+    </div>
+    <div class="task-pts" id="pts7">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Прочита́йте текст и соедини́те день неде́ли с де́йствием. ·
+    <b>EN:</b> Read the text and match each day with its activity. ·
+    <b>中文：</b>閱讀課文，將星期幾與對應活動配對。 ·
+    <b>日本語：</b>本文を読んで、曜日と行動を合わせてください。
+  </div>
+
+  <!-- Text in ZH + JP only -->
+  <div class="month-reading">
+    <p>🇹🇼 <b>星期一</b>我去大學。</p>
+    <p>🇯🇵 <b>月曜日</b>は大学へ行きます。</p>
+    <p style="margin-top:8px">🇹🇼 <b>星期二</b>我搭車去台北。</p>
+    <p>🇯🇵 <b>火曜日</b>は乗り物で台北へ行きます。</p>
+    <p style="margin-top:8px">🇹🇼 <b>星期四</b>我和我的女性朋友去山上。</p>
+    <p>🇯🇵 <b>木曜日</b>は友人（女性）と山へ行きます。</p>
+    <p style="margin-top:8px">🇹🇼 <b>星期五</b>我要休息。</p>
+    <p>🇯🇵 <b>金曜日</b>は休みます。</p>
+    <p style="margin-top:8px">🇹🇼 <b>星期六</b>我要睡覺。</p>
+    <p>🇯🇵 <b>土曜日</b>は眠ります。</p>
+    <p style="margin-top:8px">🇹🇼 <b>星期日</b>我要飛去日本。</p>
+    <p>🇯🇵 <b>日曜日</b>は日本へ飛んで行きます。</p>
+  </div>
+
+  <div class="match-wrap"><div class="match-col" id="m7ru"></div><div class="match-col" id="m7tr"></div></div>
+  <div class="match-status" id="m7status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(7)">↺ Сно́ва · Reset · 重置 · リセット</button>
+    <button class="btn" id="m7check" onclick="submitMatch(7)" style="display:none">✔ Прове́рить · Check · 送出 · 確認</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 8 · Месяцы по порядку
+══════════════════════════════════════════ -->
+<div class="task" id="task8">
+  <div class="task-header">
+    <div class="task-num">8</div>
+    <div class="task-title">
+      <h2>Ме́сяцы по поря́дку · Months in Order · 月份順序 · 月の順番</h2>
+      <div class="ml">От января́ (1) до декабря́ (12) · January → December · 一月→十二月</div>
+    </div>
+    <div class="task-pts" id="pts8">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Расставьте ме́сяцы по поря́дку от января́ до декабря́. ·
+    <b>EN:</b> Put the months in order Jan → Dec. ·
+    <b>中文：</b>將月份從一月排到十二月。 ·
+    <b>日本語：</b>月を1月から12月の順に並べてください。
+  </div>
+  <div class="ord-zone empty" id="oz8" data-hint="← 點下方月份 / Tap months below / Нажима́йте ме́сяцы"></div>
+  <div class="ord-pool" id="op8"></div>
+  <div class="ord-feedback" id="of8"></div>
+  <div class="ord-solution" id="os8"></div>
+  <div class="btnrow"><button class="btn ghost" onclick="checkOrd(8)">✔ Прове́рить · Check · 送出 · 確認</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 9 · Месяцы: пары «месяц → в + месяц»
+══════════════════════════════════════════ -->
+<div class="task" id="task9">
+  <div class="task-header">
+    <div class="task-num">9</div>
+    <div class="task-title">
+      <h2>«В/во + ме́сяц» · Months with «в/во» · 「在…月」配對 · 「В/во＋月」マッチング</h2>
+      <div class="ml">Слева — ме́сяц по-кита́йски и по-англи́йски · Left: month in Chinese & English · Right: «в/во + month» in Russian</div>
+    </div>
+    <div class="task-pts" id="pts9">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажмите ме́сяц сле́ва (по-кита́йски / по-англи́йски), зате́м его пра́вильную фо́рму «в/во + ме́сяц» по-ру́сски спра́ва. ·
+    <b>EN:</b> Tap the month on the left (in Chinese & English), then its correct Russian «в/во» form on the right. ·
+    <b>中文：</b>點左欄月份（中英文），再點右欄對應的俄語「в/во＋月份」形式。 ·
+    <b>日本語：</b>左の月（中国語・英語）をタップし、右の「в/во＋月」のロシア語形をタップしてください。
+  </div>
+  <div class="match-wrap"><div class="match-col" id="m9ru"></div><div class="match-col" id="m9tr"></div></div>
+  <div class="match-status" id="m9status"></div>
+  <div class="btnrow">
+    <button class="btn ghost" onclick="resetMatch(9)">↺ Сно́ва · Reset · 重置 · リセット</button>
+    <button class="btn" id="m9check" onclick="submitMatch(9)" style="display:none">✔ Прове́рить · Check · 送出 · 確認</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+  ЗАДАНИЕ 10 · Составь фразу (4 фразы)
+══════════════════════════════════════════ -->
+<div class="task" id="task10">
+  <div class="task-header">
+    <div class="task-num">10</div>
+    <div class="task-title">
+      <h2>Соста́вь фра́зу · Build the Phrase · 組合短語 · フレーズを組み立てよう</h2>
+      <div class="ml">Уроки 13–16 · 4 фра́зы · 4 phrases · 4個短語 · 4フレーズ</div>
+    </div>
+    <div class="task-pts" id="pts10">7 pt</div>
+  </div>
+  <div class="instr">
+    <b>RU:</b> Нажима́йте на гру́ппы слов в пра́вильном поря́дке. Нажмите в стро́ке отве́та — верну́ть гру́ппу. ·
+    <b>EN:</b> Tap word-groups in the correct order. Tap in the answer zone to return a group. ·
+    <b>中文：</b>按正確順序點詞組；點答案欄中的詞組可取回。 ·
+    <b>日本語：</b>正しい順番で語句をタップ。答え欄の語句をタップすると戻ります。
+  </div>
+  <div style="font-size:.84rem;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+    <span id="p10qnum">Фра́за 1 / 4</span>
+    <div style="flex:1;height:7px;background:var(--line);border-radius:999px;overflow:hidden">
+      <i id="p10bar" style="display:block;height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:999px;transition:width .3s;width:0%"></i>
+    </div>
+    <span style="background:var(--green-soft);color:var(--green);border-radius:999px;padding:3px 13px" id="p10score">⭐ 0</span>
+  </div>
+  <div id="p10body"></div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-row">
+  <button class="submit-btn" id="submitBtn" onclick="submitExam()">
+    📨 Сдать экза́мен · Submit Exam · 提交考卷 · 試験を提出する
+  </button>
+</div>
+
+<!-- FINAL -->
+<div class="final-card" id="finalCard">
+  <div class="final-emoji" id="finalEmoji">🎓</div>
+  <div class="final-score" id="finalScore">0 / 70</div>
+  <div class="grade-badge" id="gradeBadge"></div>
+  <div class="final-msg" id="finalMsg"></div>
+  <div class="send-status" id="sendStatus"></div>
+</div>
+
+<footer>
+  Уда́рения отме́чены во всех ру́сских слова́х · Stress marks on all Russian words · 所有俄語單詞均標有重音<br>
+  Иеро́глифы — то́лько традицио́нные · Traditional Chinese only · 僅繁體中文<br>
+  中原大學 · 俄文進階 · Copyright © 2026 : Vladimir Kurdyumov · 耿華
+</footer>
+</div>
+
+<script>
+/* ════════ TIMER ════════ */
+let timerSecs = 60 * 60;
+let timerDone = false;
+const timerDisplay = document.getElementById('timerDisplay');
+const timerMsg = document.getElementById('timerMsg');
+
+function formatTime(s){
+  const m = Math.floor(s/60), sec = s%60;
+  return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+}
+
+const timerInterval = setInterval(()=>{
+  if(timerDone) return;
+  timerSecs--;
+  timerDisplay.textContent = formatTime(timerSecs);
+  if(timerSecs <= 300) timerDisplay.className='timer-display warn';
+  if(timerSecs <= 60)  timerDisplay.className='timer-display urgent';
+  if(timerSecs <= 0){
+    clearInterval(timerInterval);
+    timerDone = true;
+    timerDisplay.textContent = '00:00';
+    timerMsg.textContent = '⏱ Вре́мя вы́шло! · Time\'s up! · 時間到！';
+    document.getElementById('timesUpOverlay').classList.add('shown');
+    setTimeout(()=>{
+      document.getElementById('timesUpOverlay').classList.remove('shown');
+      submitExam();
+    }, 3500);
+  }
+}, 1000);
+
+/* ════════ SCORE STATE ════════ */
+const MAX=70;
+const scores={};
+const done={};
+for(let i=1;i<=10;i++){scores[i]=0;done[i]=false;}
+function totalScore(){return Object.values(scores).reduce((a,b)=>a+b,0);}
+function updateUI(){
+  const t=totalScore();
+  document.getElementById('totalDisplay').textContent=t+' / '+MAX;
+  document.getElementById('scoreBarFill').style.width=(t/MAX*100).toFixed(1)+'%';
+  document.getElementById('scorePercent').textContent=(t/MAX*100).toFixed(0)+'%';
+}
+function award(n,pts,max){
+  scores[n]=pts; done[n]=true;
+  const el=document.getElementById('pts'+n);
+  if(el){el.textContent=pts+' / '+max; if(pts===max) el.classList.add('earned');}
+  updateUI();
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function norm(s){return s.trim().toLowerCase().replace(/\u0301/g,'').replace(/ё/g,'е');}
+
+/* ════════ DATA ════════ */
+
+// TASK 1: RU → ZH/EN/JP
+const mc1pool = [
+  {ru:'в понеде́льник', correct:'Monday · 星期一 · 月曜日に', opts:['Monday · 星期一 · 月曜日に','Tuesday · 星期二 · 火曜日に','Sunday · 星期日 · 日曜日に','Friday · 星期五 · 金曜日に']},
+  {ru:'в суббо́ту', correct:'Saturday · 星期六 · 土曜日に', opts:['Saturday · 星期六 · 土曜日に','Sunday · 星期日 · 日曜日に','Thursday · 星期四 · 木曜日に','Wednesday · 星期三 · 水曜日に']},
+  {ru:'пойду́', correct:'I will go (on foot) · 走著去 · 歩いて行く', opts:['I will go (on foot) · 走著去 · 歩いて行く','I will go by transport · 乘車去 · 乗り物で行く','I will sleep · 睡覺 · 眠る','I will rest · 休息 · 休む']},
+  {ru:'витами́н', correct:'vitamin · 維生素 · ビタミン', opts:['vitamin · 維生素 · ビタミン','milligram · 毫克 · ミリグラム','lemon · 檸檬 · レモン','canteen · 食堂 · 食堂']},
+  {ru:'магази́н', correct:'shop/store · 商店 · お店', opts:['shop/store · 商店 · お店','canteen · 食堂 · 食堂','airport · 機場 · 空港','café · 咖啡廳 · カフェ']},
+  {ru:'лимо́н', correct:'lemon · 檸檬 · レモン', opts:['lemon · 檸檬 · レモン','lime · 青檸 · ライム','pomelo · 文旦 · ブンタン','grapefruit · 葡萄柚 · グレープフルーツ']},
+  {ru:'вы́игрыш', correct:'prize/winnings · 中獎獎金 · 賞金', opts:['prize/winnings · 中獎獎金 · 賞金','receipt · 發票 · レシート','lottery · 彩券 · 宝くじ','ticket · 票 · チケット']},
+];
+
+// TASK 2: ZH/EN/JP → RU (question is entirely in ZH/EN/JP, no Russian)
+const mc2pool = [
+  {q:'散步 · to stroll · 散歩する', correct:'гуля́ть', opts:['гуля́ть','учи́ться','пить','рабо́тать']},
+  {q:'拍照 · to take photos · 写真を撮る', correct:'фотографи́ровать', opts:['фотографи́ровать','носи́ть','скуча́ть','есть']},
+  {q:'想家 · to miss home · ホームシックになる', correct:'скуча́ть по до́му', opts:['скуча́ть по до́му','гуля́ть по до́му','есть до́ма','учи́ться до́ма']},
+  {q:'穿；戴 · to wear · 着る・かぶる', correct:'носи́ть', opts:['носи́ть','пить','гуля́ть','учи́ться']},
+  {q:'食堂 · canteen · 食堂', correct:'столо́вая', opts:['столо́вая','ку́ртка','пло́щадь','ша́пка']},
+  {q:'外套 · jacket · ジャケット', correct:'ку́ртка', opts:['ку́ртка','ша́пка','пло́щадь','столо́вая']},
+  {q:'讀書；學習 · to study · 勉強する', correct:'учи́ться', opts:['учи́ться','пить','носи́ть','есть']},
+];
+
+// TASK 3: matching 13–14
+const match3data = [
+  {ru:'де́лать', tr:'to do · 做 · する'},
+  {ru:'купи́ть', tr:'to buy · 買 · 買う'},
+  {ru:'отдыха́ть', tr:'to rest · 休息 · 休む'},
+  {ru:'го́ры', tr:'mountains · 山 · 山'},
+  {ru:'апельси́н', tr:'orange · 柳橙 · オレンジ'},
+  {ru:'ты́сяча', tr:'thousand · 千 · 千'},
+];
+
+// TASK 4: matching 15–16
+const match4data = [
+  {ru:'чек', tr:'receipt · 發票 · レシート'},
+  {ru:'лотере́я', tr:'lottery · 彩券 · 宝くじ'},
+  {ru:'уда́ча', tr:'luck · 好運 · 幸運'},
+  {ru:'гран-при́', tr:'grand prize · 特獎 · グランプリ'},
+  {ru:'пить', tr:'to drink · 喝 · 飲む'},
+  {ru:'Москва́', tr:'Moscow · 莫斯科 · モスクワ'},
+];
+
+// TASK 5: gender
+const genderData = [
+  {ru:'студе́нт', g:'m'},
+  {ru:'телефо́н', g:'m'},
+  {ru:'магази́н', g:'m'},
+  {ru:'студе́нтка', g:'f'},
+  {ru:'ку́ртка', g:'f'},
+  {ru:'лотере́я', g:'f'},
+  {ru:'ша́пка', g:'f'},
+  {ru:'кино́', g:'n'},
+  {ru:'ра́дио', g:'n'},
+];
+
+// TASK 6: days nominative
+const daysNom = ['понеде́льник','вто́рник','среда́','четве́рг','пя́тница','суббо́та','воскресе́нье'];
+
+// TASK 7: days + activity matching
+const match7data = [
+  {ru:'в понеде́льник', tr:'пойду́ в университе́т'},
+  {ru:'во вто́рник', tr:'пое́ду в Та́йбэй'},
+  {ru:'в четве́рг', tr:'пойдём в го́ры'},
+  {ru:'в пя́тницу', tr:'бу́ду отдыха́ть'},
+  {ru:'в суббо́ту', tr:'бу́ду спать'},
+  {ru:'в воскресе́нье', tr:'улета́ю в Япо́нию'},
+];
+
+// TASK 8: months
+const months = ['янва́рь','февра́ль','март','апре́ль','май','ию́нь','ию́ль','а́вгуст','сентя́брь','октя́брь','ноя́брь','дека́брь'];
+
+// TASK 9: ZH+EN month → в/во + prepositional (ru)
+// key = unique match identifier, ru = left-col display (ZH+EN), tr = right-col display (в + month)
+const match9data = [
+  {key:'jan', ru:'一月 · January',     tr:'в январе́'},
+  {key:'feb', ru:'二月 · February',    tr:'в феврале́'},
+  {key:'mar', ru:'三月 · March',       tr:'в ма́рте'},
+  {key:'apr', ru:'四月 · April',       tr:'в апре́ле'},
+  {key:'may', ru:'五月 · May',         tr:'в ма́е'},
+  {key:'jun', ru:'六月 · June',        tr:'в ию́не'},
+  {key:'jul', ru:'七月 · July',        tr:'в ию́ле'},
+  {key:'aug', ru:'八月 · August',      tr:'в а́вгусте'},
+  {key:'sep', ru:'九月 · September',   tr:'в сентябре́'},
+  {key:'oct', ru:'十月 · October',     tr:'в октябре́'},
+  {key:'nov', ru:'十一月 · November',  tr:'в ноябре́'},
+  {key:'dec', ru:'十二月 · December',  tr:'в декабре́'},
+];
+// pick 6 random pairs for exam
+const match9exam = shuffle(match9data).slice(0,6);
+
+// TASK 10: 4 phrases
+const phrases = [
+  {
+    zh:'星期日我要飛去日本。', en:'On Sunday I am flying to Japan.', jp:'日曜日に私は日本へ飛んで行きます。',
+    groups:['В воскресе́нье','я улета́ю','в Япо́нию.'],
+  },
+  {
+    zh:'晚上他在紅場散步並拍照。', en:'In the evening he strolls on Red Square and takes photos.', jp:'夕方に彼は赤の広場を散歩して写真を撮ります。',
+    groups:['Ве́чером','он гуля́ет','на Кра́сной пло́щади','и фотографи́рует.'],
+  },
+  {
+    zh:'星期二我要乘車去台北。', en:'On Tuesday I will go to Taipei by transport.', jp:'火曜日に私は乗り物で台北へ行きます。',
+    groups:['Во вто́рник','я пое́ду','в Та́йбэй.'],
+  },
+  {
+    zh:'他早上喝茶，不喝咖啡。', en:'In the morning he drinks tea, not coffee.', jp:'朝、彼はコーヒーではなくお茶を飲みます。',
+    groups:['У́тром','он пьёт','чай,','а не ко́фе.'],
+  },
+];
+const P10PTS = [2,2,2,1]; // 2+2+2+1 = 7
+
+/* ════════ BUILD MC ════════ */
+function buildMCSection(containerId, pool, taskId, isRU){
+  const box = document.getElementById(containerId);
+  const chosen = shuffle(pool).slice(0,2);
+  chosen.forEach((d,qi)=>{
+    const div = document.createElement('div');
+    div.style.marginBottom='14px';
+    const qHtml = isRU
+      ? `<div class="q-ru">${d.ru}</div><div class="q-sub">意味は？· What does this mean? · 這是什麼意思？</div>`
+      : `<div class="q-ru" style="font-size:1rem">${d.q}</div><div class="q-sub">ロシア語は？· Choose the Russian word · 選出俄語單詞</div>`;
+    const correct = isRU ? d.correct : d.correct;
+    const opts = shuffle(d.opts.map(o=>({label:o, ok: norm(o)===norm(d.correct)})));
+    div.innerHTML=`
+      <div class="qcard">${qHtml}</div>
+      <div class="answers" id="mc${taskId}q${qi}">
+        ${opts.map(o=>`<button class="ans" onclick="mcClick(this,'mc${taskId}q${qi}','${o.ok}')">
+          <div class="ruA">${o.label}</div>
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="mcfb${taskId}q${qi}"></div>`;
+    box.appendChild(div);
+  });
+}
+
+buildMCSection('mc1body', mc1pool, 1, true);
+buildMCSection('mc2body', mc2pool, 2, false);
+
+const mcAnswers={};
+function mcClick(btn,qid,isOk){
+  if(mcAnswers[qid]!==undefined) return;
+  mcAnswers[qid]=(isOk==='true');
+  btn.classList.add(isOk==='true'?'correct':'wrong');
+  const fb=document.getElementById('mcfb'+qid);
+  if(fb){
+    fb.textContent=isOk==='true'?'✅ Верно! · Correct! · 正確！· 正解！':'❌ Неверно. · Incorrect. · 不正確。· 不正解。';
+    fb.className='feedback '+(isOk==='true'?'good':'bad');
+  }
+}
+function checkMCTask(n){
+  if(done[n]) return;
+  document.querySelectorAll(`#mc${n}body .ans`).forEach(b=>b.disabled=true);
+  const q0=mcAnswers[`mc${n}q0`]===true;
+  const q1=mcAnswers[`mc${n}q1`]===true;
+  award(n,(q0?4:0)+(q1?3:0),7);
+}
+
+/* ════════ MATCHING ════════ */
+const matchState={};
+
+function buildMatch(n, data){
+  const ruEl=document.getElementById('m'+n+'ru');
+  const trEl=document.getElementById('m'+n+'tr');
+  if(!ruEl||!trEl) return;
+  ruEl.innerHTML=''; trEl.innerHTML='';
+  matchState[n]={sel:null,matched:0,wrong:0,total:data.length,data,done:false};
+  const hasKey = data.length>0 && !!data[0].key;
+  shuffle(data).forEach(d=>{
+    const matchKey = d.key || d.ru;
+    const b=document.createElement('button');
+    b.className='chip-btn '+(hasKey?'zh-chip':'ru-chip'); b.textContent=d.ru; b.dataset.key=matchKey;
+    b.addEventListener('click',()=>mPickRu(n,b));
+    ruEl.appendChild(b);
+  });
+  shuffle(data).forEach(d=>{
+    const matchKey = d.key || d.ru;
+    const b=document.createElement('button');
+    b.className='chip-btn tr-chip'; b.textContent=d.tr; b.dataset.key=matchKey;
+    b.addEventListener('click',()=>mPickTr(n,b));
+    trEl.appendChild(b);
+  });
+}
+
+function mPickRu(n,b){
+  const s=matchState[n]; if(s.done||b.classList.contains('matched')) return;
+  document.querySelectorAll('#m'+n+'ru .chip-btn').forEach(x=>x.classList.remove('selected'));
+  b.classList.add('selected'); s.sel=b;
+}
+function mPickTr(n,b){
+  const s=matchState[n]; if(s.done||!s.sel||b.classList.contains('matched')) return;
+  if(b.dataset.key===s.sel.dataset.key){
+    b.classList.add('matched'); s.sel.classList.add('matched'); s.sel.classList.remove('selected');
+    s.sel=null; s.matched++;
+    document.getElementById('m'+n+'status').textContent=`✓ ${s.matched} / ${s.total}`;
+    if(s.matched===s.total){
+      document.getElementById('m'+n+'status').textContent='🎉 Все па́ры! · All matched! · 全部配對完成！';
+      const ck=document.getElementById('m'+n+'check');
+      if(ck) ck.style.display='inline-block';
+    }
+  } else {
+    s.wrong++;
+    document.getElementById('m'+n+'status').textContent='✗ Не та́к. Попро́буйте ещё. · Try again. · 再試一次。';
+    s.sel.classList.remove('selected'); s.sel=null;
+    b.classList.add('wrong-flash');
+    setTimeout(()=>b.classList.remove('wrong-flash'),500);
+  }
+}
+function resetMatch(n){
+  if(done[n]) return;
+  document.getElementById('m'+n+'status').textContent='';
+  const ck=document.getElementById('m'+n+'check');
+  if(ck) ck.style.display='none';
+  const dataMap={3:match3data,4:match4data,7:match7data,9:match9exam};
+  buildMatch(n, dataMap[n]);
+}
+function submitMatch(n){
+  if(done[n]) return;
+  const s=matchState[n];
+  document.querySelectorAll('#m'+n+'ru .chip-btn,#m'+n+'tr .chip-btn').forEach(b=>b.style.pointerEvents='none');
+  s.done=true;
+  const pts=Math.min(7,Math.max(0,Math.round((s.matched/s.total)*7)-Math.floor(s.wrong/2)));
+  award(n,pts,7);
+}
+
+buildMatch(3,match3data);
+buildMatch(4,match4data);
+buildMatch(7,match7data);
+buildMatch(9,match9exam);
+
+/* ════════ GENDER ════════ */
+let gSel=null;
+const gPlace={};
+
+(function buildGender(){
+  const bank=document.getElementById('g5bank');
+  shuffle(genderData).forEach(d=>{
+    const b=document.createElement('button');
+    b.className='g-bank-word'; b.textContent=d.ru; b.dataset.ru=d.ru; b.dataset.g=d.g;
+    b.addEventListener('click',()=>{
+      if(b.classList.contains('gplaced')) return;
+      document.querySelectorAll('.g-bank-word').forEach(x=>x.classList.remove('gsel'));
+      b.classList.add('gsel');
+      gSel=b;
+      // highlight columns
+      ['m','f','n'].forEach(g=>{
+        document.getElementById('gcol-'+g).classList.add('col-active');
+      });
+    });
+    bank.appendChild(b);
+  });
+})();
+
+function gColClick(g){
+  if(!gSel) return;
+  const ru=gSel.dataset.ru;
+  // remove from previous col if placed
+  if(gPlace[ru]){
+    const prevDrop=document.getElementById('gdrop-'+gPlace[ru]);
+    const existing=prevDrop.querySelector('[data-ru="'+ru+'"]');
+    if(existing) prevDrop.removeChild(existing);
+    // un-place bank word
+    const bankWord=document.querySelector('.g-bank-word[data-ru="'+ru+'"]');
+    if(bankWord) bankWord.classList.remove('gplaced');
+  }
+  gPlace[ru]=g;
+  gSel.classList.add('gplaced');
+  gSel.classList.remove('gsel');
+  // add to col
+  const drop=document.getElementById('gdrop-'+g);
+  const cl=document.createElement('span');
+  cl.className='g-col-word'; cl.textContent=ru; cl.dataset.ru=ru;
+  cl.addEventListener('click',()=>{
+    drop.removeChild(cl);
+    delete gPlace[ru];
+    const bw=document.querySelector('.g-bank-word[data-ru="'+ru+'"]');
+    if(bw) bw.classList.remove('gplaced');
+  });
+  drop.appendChild(cl);
+  gSel=null;
+  ['m','f','n'].forEach(gg=>document.getElementById('gcol-'+gg).classList.remove('col-active'));
+}
+
+function checkGender(){
+  if(done[5]) return;
+  let correct=0;
+  genderData.forEach(d=>{
+    const placed=gPlace[d.ru];
+    const colWord=document.querySelector('#gdrop-'+(placed||'x')+' [data-ru="'+d.ru+'"]');
+    if(placed===d.g){
+      correct++;
+      if(colWord) colWord.classList.add('correct-g');
+    } else if(colWord){
+      colWord.classList.add('wrong-g');
+    }
+  });
+  document.querySelectorAll('.g-bank-word').forEach(b=>b.style.pointerEvents='none');
+  document.querySelectorAll('.g-col-word').forEach(b=>b.style.pointerEvents='none');
+  const fb=document.getElementById('fb5');
+  fb.textContent=`${correct} / ${genderData.length} пра́вильно · correct · 正確 · 正解`;
+  fb.className='feedback '+(correct===genderData.length?'good':'bad');
+  const pts=Math.min(7,Math.round((correct/genderData.length)*7));
+  award(5,pts,7);
+}
+
+/* ════════ ORDER (tasks 6 & 8) ════════ */
+const ordState={};
+function initOrd(n,items){
+  ordState[n]={zone:[],pool:shuffle(items.slice()),correct:items};
+  rebuildOrd(n);
+}
+function rebuildOrd(n){
+  const s=ordState[n];
+  const zone=document.getElementById('oz'+n);
+  const pool=document.getElementById('op'+n);
+  if(!zone||!pool) return;
+  zone.innerHTML=''; zone.classList.toggle('empty',s.zone.length===0);
+  zone.classList.remove('ok-zone','bad-zone');
+  s.zone.forEach((w,i)=>{
+    const c=document.createElement('button'); c.className='w-chip'; c.textContent=w;
+    c.onclick=()=>{s.pool.push(s.zone.splice(i,1)[0]); rebuildOrd(n);};
+    zone.appendChild(c);
+  });
+  pool.innerHTML='';
+  s.pool.forEach((w,i)=>{
+    const c=document.createElement('button'); c.className='w-chip'; c.textContent=w;
+    c.onclick=()=>{s.zone.push(s.pool.splice(i,1)[0]); rebuildOrd(n);};
+    pool.appendChild(c);
+  });
+}
+function checkOrd(n){
+  if(done[n]) return;
+  const s=ordState[n];
+  const ok=JSON.stringify(s.zone.map(norm))===JSON.stringify(s.correct.map(norm));
+  const zone=document.getElementById('oz'+n);
+  zone.classList.add(ok?'ok-zone':'bad-zone');
+  const fb=document.getElementById('of'+n);
+  const sol=document.getElementById('os'+n);
+  if(ok){
+    fb.textContent='✅ Пра́вильно! · Correct! · 正確！· 正解！'; fb.className='ord-feedback good';
+  } else {
+    fb.textContent='❌ Пра́вильный поря́док:'; fb.className='ord-feedback bad';
+    sol.textContent=s.correct.join(' — '); sol.style.display='block';
+  }
+  document.querySelectorAll('#oz'+n+' .w-chip,#op'+n+' .w-chip').forEach(c=>c.disabled=true);
+  let correct=0;
+  s.zone.forEach((w,i)=>{ if(i<s.correct.length&&norm(w)===norm(s.correct[i])) correct++; });
+  award(n,ok?7:Math.min(5,Math.round((correct/s.correct.length)*7)),7);
+}
+initOrd(6,daysNom);
+initOrd(8,months);
+
+/* ════════ PHRASE BUILDER (task 10) ════════ */
+let p10idx=0, p10score=0;
+
+function renderPhrase(){
+  document.getElementById('p10qnum').textContent=`Фра́за ${p10idx+1} / ${phrases.length}`;
+  document.getElementById('p10bar').style.width=(p10idx/phrases.length*100)+'%';
+  document.getElementById('p10score').textContent='⭐ '+p10score;
+  if(p10idx>=phrases.length){
+    document.getElementById('p10body').innerHTML=`
+      <div style="text-align:center;padding:18px 10px">
+        <div style="font-size:2.5rem">${p10score>=5?'🏆':p10score>=3?'🎉':'💪'}</div>
+        <div style="font-size:1.3rem;font-weight:700;color:var(--terra);margin:6px 0">${p10score} / 7</div>
+        <div style="font-size:.88rem;color:var(--ink-soft)">${p10score>=5?'Отли́чно! · Excellent! · 太棒了！':'Продолжа́йте учи́ться! · Keep studying! · 繼續加油！'}</div>
+      </div>`;
+    scores[10]=p10score; done[10]=true;
+    const el=document.getElementById('pts10');
+    if(el){el.textContent=p10score+' / 7'; if(p10score===7) el.classList.add('earned');}
+    updateUI(); return;
+  }
+  const ph=phrases[p10idx];
+  let pzZone=[], pzPool=shuffle(ph.groups.slice());
+  document.getElementById('p10body').innerHTML=`
+    <div class="phrase-target">
+      <div class="pt-zh">🇹🇼 ${ph.zh}</div>
+      <div class="pt-en">🇬🇧 ${ph.en}</div>
+      <div class="pt-jp">🇯🇵 ${ph.jp}</div>
+    </div>
+    <div class="ord-zone empty" id="pz10zone" data-hint="← 點詞組 / Tap groups / Нажима́йте гру́ппы"></div>
+    <div class="ord-pool" id="pz10pool"></div>
+    <div class="ord-feedback" id="pz10fb"></div>
+    <div class="ord-solution" id="pz10sol"></div>
+    <div class="btnrow" style="margin-top:10px">
+      <button class="btn ghost" onclick="checkPhrase()">✔ Прове́рить · Check · 送出 · 確認</button>
+      <button class="btn" id="pz10next" style="display:none" onclick="nextPhrase()">Сле́дующее · Next · 下一句 ➜</button>
+    </div>`;
+
+  function rebuildPZ(){
+    const zone=document.getElementById('pz10zone');
+    const pool=document.getElementById('pz10pool');
+    if(!zone||!pool) return;
+    zone.innerHTML=''; zone.classList.toggle('empty',pzZone.length===0);
+    zone.classList.remove('ok-zone','bad-zone');
+    pzZone.forEach((g,i)=>{
+      const c=document.createElement('button'); c.className='w-chip'; c.textContent=g;
+      c.onclick=()=>{pzPool.push(pzZone.splice(i,1)[0]); rebuildPZ();};
+      zone.appendChild(c);
+    });
+    pool.innerHTML='';
+    pzPool.forEach((g,i)=>{
+      const c=document.createElement('button'); c.className='w-chip'; c.textContent=g;
+      c.onclick=()=>{pzZone.push(pzPool.splice(i,1)[0]); rebuildPZ();};
+      pool.appendChild(c);
+    });
+  }
+  rebuildPZ();
+
+  window.checkPhrase=function(){
+    const ok=JSON.stringify(pzZone.map(norm))===JSON.stringify(ph.groups.map(norm));
+    const zone=document.getElementById('pz10zone');
+    zone.classList.add(ok?'ok-zone':'bad-zone');
+    const fb=document.getElementById('pz10fb');
+    if(ok){
+      fb.textContent='✅ Пра́вильно! · Correct! · 正確！'; fb.className='ord-feedback good';
+      p10score+=P10PTS[p10idx];
+      document.getElementById('p10score').textContent='⭐ '+p10score;
+    } else {
+      fb.textContent='❌ Пра́вильный поря́док:'; fb.className='ord-feedback bad';
+      const sol=document.getElementById('pz10sol');
+      sol.textContent=ph.groups.join(' / '); sol.style.display='block';
+    }
+    document.querySelectorAll('#pz10zone .w-chip,#pz10pool .w-chip').forEach(c=>c.disabled=true);
+    document.getElementById('pz10next').style.display='inline-block';
+  };
+}
+window.nextPhrase=function(){ p10idx++; renderPhrase(); };
+renderPhrase();
+
+/* ════════ SUBMIT + EmailJS ════════ */
+function submitExam(){
+  clearInterval(timerInterval);
+  timerDone=true;
+
+  const name  = document.getElementById('stuName').value.trim();
+  const id    = document.getElementById('stuId').value.trim();
+  const email = document.getElementById('stuEmail').value.trim();
+  const ruName= document.getElementById('stuRuName').value.trim()||'—';
+  const notes = document.getElementById('stuNotes').value.trim()||'—';
+
+  let ok=true;
+  if(!name){document.getElementById('stuName').classList.add('err');ok=false;}
+  if(!id)  {document.getElementById('stuId').classList.add('err');ok=false;}
+  if(!email||!email.includes('@')){document.getElementById('stuEmail').classList.add('err');ok=false;}
+  if(!ok){
+    alert('Пожа́луйста, запо́лните все поля́.\nPlease fill in all required fields.\n請填寫所有必填欄位。\nすべての必須項目を入力してください。');
+    return;
+  }
+
+  // force-check unchecked tasks
+  if(!done[1]) checkMCTask(1);
+  if(!done[2]) checkMCTask(2);
+  if(!done[3]) submitMatch(3);
+  if(!done[4]) submitMatch(4);
+  if(!done[5]) checkGender();
+  if(!done[6]) checkOrd(6);
+  if(!done[7]) submitMatch(7);
+  if(!done[8]) checkOrd(8);
+  if(!done[9]) submitMatch(9);
+  // task 10 auto-tallies
+
+  const t=totalScore();
+  const pct=(t/MAX*100).toFixed(0);
+  let emoji,grade,msg;
+  if(t>=63){emoji='🏆';grade='Отли́чно / A';msg='Превосхо́дный результа́т! · Outstanding! · 成績優秀！· 素晴らしい！';}
+  else if(t>=49){emoji='🎉';grade='Хорошо́ / B';msg='О́чень хорошо́! · Very good! · 非常好！· よくできました！';}
+  else if(t>=35){emoji='👍';grade='Удовл. / C';msg='Продолжа́йте учи́ться! · Keep studying! · 繼續加油！· 頑張ってください！';}
+  else{emoji='📚';grade='Повтори́те / F';msg='Повтори́те материа́л. · Review the material. · 請複習。· 復習してください。';}
+
+  document.getElementById('finalEmoji').textContent=emoji;
+  document.getElementById('finalScore').textContent=t+' / '+MAX+' ('+pct+'%)';
+  document.getElementById('gradeBadge').textContent=grade;
+  document.getElementById('finalMsg').textContent=msg;
+  const fc=document.getElementById('finalCard');
+  fc.classList.add('shown');
+  document.getElementById('submitBtn').disabled=true;
+  fc.scrollIntoView({behavior:'smooth',block:'center'});
+
+  const breakdown=Object.entries(scores).map(([n,s])=>`Задание ${n}: ${s}/7`).join('\n');
+  const fullBody=`Экзамен: Русский язык, Уроки 9–16
+Имя: ${name} (рус.: ${ruName})
+ID: ${id}
+Email: ${email}
+Примечания: ${notes}
+Результат: ${t}/${MAX} (${pct}%)
+Оценка: ${grade}
+
+Баллы по заданиям:
+${breakdown}`;
+
+  sendViaEmailJS({
+    student_name: name,
+    student_id: id,
+    student_email: email,
+    russian_name: ruName,
+    notes: notes,
+    total_score: `${t} / ${MAX} (${pct}%)`,
+    grade: grade,
+    breakdown: breakdown,
+    full_body: fullBody,
+    to_email: 'collegeorient@gmail.com',
+    cc_email: email,
+  });
+}
+
+async function sendViaEmailJS(params){
+  const status=document.getElementById('sendStatus');
+  status.style.display='block'; status.className='send-status';
+  status.textContent='📤 Отправля́ется · Sending · 傳送中… · 送信中…';
+
+  try{
+    const res = await emailjs.send(
+      'collegeorient',       // Service ID
+      'template_p4kk8bt',   // Template ID
+      params
+    );
+    if(res.status===200){
+      status.className='send-status ok';
+      status.textContent='✅ Результа́т отпра́влен преподава́телю и вам · Results sent to teacher & student · 成績已發送 · 成績を送信しました';
+    } else {
+      throw new Error('Status '+res.status);
+    }
+  } catch(e){
+    status.className='send-status err';
+    status.textContent='⚠ Не удало́сь отпра́вить. Сде́лайте скриншо́т. · Send failed — please screenshot. · 發送失敗，請截圖。· 送信失敗。スクリーンショットを撮ってください。';
+    console.error('EmailJS error:', e);
+  }
+}
+</script>
+</body>
+</html>
