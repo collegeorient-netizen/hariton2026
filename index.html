@@ -613,14 +613,14 @@ footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);
 </div>
 
 <!-- ══════════════════════════════════════════
-  ЗАДАНИЕ 10 · Составь фразу (4 фразы)
+  ЗАДАНИЕ 10 · Соста́вь предложе́ние — витами́н Цэ
 ══════════════════════════════════════════ -->
 <div class="task" id="task10">
   <div class="task-header">
     <div class="task-num">10</div>
     <div class="task-title">
-      <h2>Соста́вь фра́зу · Build the Phrase · 組合短語 · フレーズを組み立てよう</h2>
-      <div class="ml">Уроки 13–16 · 4 фра́зы · 4 phrases · 4個短語 · 4フレーズ</div>
+      <h2>Соста́вь предложе́ние · Build the Sentence · 組合句子 · 文を組み立てよう</h2>
+      <div class="ml">Уро́к 13 · Витами́н Цэ в цитру́совых · Vitamin C in citrus fruits · 柑橘類中的維生素C</div>
     </div>
     <div class="task-pts" id="pts10">7 pt</div>
   </div>
@@ -631,7 +631,7 @@ footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);
     <b>日本語：</b>正しい順番で語句をタップ。答え欄の語句をタップすると戻ります。
   </div>
   <div style="font-size:.84rem;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
-    <span id="p10qnum">Фра́за 1 / 4</span>
+    <span id="p10qnum">Предложе́ние 1 / 5</span>
     <div style="flex:1;height:7px;background:var(--line);border-radius:999px;overflow:hidden">
       <i id="p10bar" style="display:block;height:100%;background:linear-gradient(90deg,var(--terra),var(--gold));border-radius:999px;transition:width .3s;width:0%"></i>
     </div>
@@ -659,7 +659,7 @@ footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);
 <footer>
   Уда́рения отме́чены во всех ру́сских слова́х · Stress marks on all Russian words · 所有俄語單詞均標有重音<br>
   Иеро́глифы — то́лько традицио́нные · Traditional Chinese only · 僅繁體中文<br>
-  中原大學 · 俄文進階 · Copyright © 2026-2036 : Vladimir Kurdyumov · 耿華
+  中原大學 · 俄文進階 · Copyright © 2026 : Vladimir Kurdyumov · 耿華
 </footer>
 </div>
 
@@ -807,26 +807,40 @@ const match9data = [
 // pick 6 random pairs for exam
 const match9exam = shuffle(match9data).slice(0,6);
 
-// TASK 10: 4 phrases
+// TASK 10: 5 sentences — Vitamin C in citrus fruits (Lesson 13)
 const phrases = [
   {
-    zh:'星期日我要飛去日本。', en:'On Sunday I am flying to Japan.', jp:'日曜日に私は日本へ飛んで行きます。',
-    groups:['В воскресе́нье','я улета́ю','в Япо́нию.'],
+    zh:'柚子（文旦）含六十一毫克維生素C。',
+    en:'Pomelo contains sixty-one mg of vitamin C.',
+    jp:'ブンタンにはビタミンCが61ミリグラム含まれています。',
+    groups:['В поме́ло —','шестьдеся́т оди́н','миллигра́мм','витами́на Цэ.'],
   },
   {
-    zh:'晚上他在紅場散步並拍照。', en:'In the evening he strolls on Red Square and takes photos.', jp:'夕方に彼は赤の広場を散歩して写真を撮ります。',
-    groups:['Ве́чером','он гуля́ет','на Кра́сной пло́щади','и фотографи́рует.'],
+    zh:'柳橙含六十毫克維生素C。',
+    en:'An orange contains sixty mg of vitamin C.',
+    jp:'オレンジにはビタミンCが60ミリグラム含まれています。',
+    groups:['В апельси́не —','шестьдеся́т','миллигра́ммов','витами́на Цэ.'],
   },
   {
-    zh:'星期二我要乘車去台北。', en:'On Tuesday I will go to Taipei by transport.', jp:'火曜日に私は乗り物で台北へ行きます。',
-    groups:['Во вто́рник','я пое́ду','в Та́йбэй.'],
+    zh:'葡萄柚含四十五毫克維生素C。',
+    en:'A grapefruit contains forty-five mg of vitamin C.',
+    jp:'グレープフルーツにはビタミンCが45ミリグラム含まれています。',
+    groups:['В гре́йпфруте —','со́рок пять','миллигра́ммов','витами́на Цэ.'],
   },
   {
-    zh:'他早上喝茶，不喝咖啡。', en:'In the morning he drinks tea, not coffee.', jp:'朝、彼はコーヒーではなくお茶を飲みます。',
-    groups:['У́тром','он пьёт','чай,','а не ко́фе.'],
+    zh:'檸檬含四十毫克維生素C。',
+    en:'A lemon contains forty mg of vitamin C.',
+    jp:'レモンにはビタミンCが40ミリグラム含まれています。',
+    groups:['В лимо́не —','со́рок','миллигра́ммов','витами́на Цэ.'],
+  },
+  {
+    zh:'萊姆含二十九毫克維生素C。',
+    en:'A lime contains twenty-nine mg of vitamin C.',
+    jp:'ライムにはビタミンCが29ミリグラム含まれています。',
+    groups:['В ла́йме —','два́дцать де́вять','миллигра́ммов','витами́на Цэ.'],
   },
 ];
-const P10PTS = [2,2,2,1]; // 2+2+2+1 = 7
+const P10PTS = [2,2,1,1,1]; // 2+2+1+1+1 = 7
 
 /* ════════ BUILD MC ════════ */
 function buildMCSection(containerId, pool, taskId, isRU){
@@ -1278,7 +1292,7 @@ function submitExam(){
     7:'«В...» + действие (урок 13)',
     8:'Месяцы по порядку',
     9:'Месяц → «в/во + месяц»',
-    10:'Составь фразу (4 фразы)',
+    10:'Соста́вь предложе́ние (витами́н Цэ)',
   };
 
   const sep = '─'.repeat(36);
