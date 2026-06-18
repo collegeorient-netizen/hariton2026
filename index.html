@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Экза́мен · Уроки 9–16 · Ру́сский язы́к</title>
+<title>Экза́мен · 期末考試· Уроки 9–16 · Ру́сский язы́к</title>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init('fcPVwgpMK7uXx_D3B');</script>
 <style>
@@ -659,7 +659,7 @@ footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);
 <footer>
   Уда́рения отме́чены во всех ру́сских слова́х · Stress marks on all Russian words · 所有俄語單詞均標有重音<br>
   Иеро́глифы — то́лько традицио́нные · Traditional Chinese only · 僅繁體中文<br>
-  中原大學 · 俄文進階 · Copyright © 2026-2036 : Vladimir Kurdyumov · 耿華
+  中原大學 · 俄文進階 · Copyright © 2026 : Vladimir Kurdyumov · 耿華
 </footer>
 </div>
 
@@ -667,6 +667,7 @@ footer{text-align:center;margin-top:18px;font-size:.71rem;color:var(--ink-soft);
 /* ════════ TIMER ════════ */
 let timerSecs = 60 * 60;
 let timerDone = false;
+const examStartTime = new Date();  // момент начала экзамена
 const timerDisplay = document.getElementById('timerDisplay');
 const timerMsg = document.getElementById('timerMsg');
 
@@ -1296,7 +1297,12 @@ function submitExam(){
   };
 
   const sep = '─'.repeat(36);
-  const now = new Date().toLocaleString('zh-TW', {timeZone:'Asia/Taipei'});
+  const fmt = d => d.toLocaleString('zh-TW', {timeZone:'Asia/Taipei', hour12:false});
+  const startStr  = fmt(examStartTime);
+  const submitTime= new Date();
+  const submitStr = fmt(submitTime);
+  const durSec    = Math.round((submitTime - examStartTime)/1000);
+  const durStr    = `${Math.floor(durSec/60)} мин ${durSec%60} сек`;
 
   const breakdownLines = Object.entries(scores)
     .map(([n,s]) => `Задание ${n} — ${taskNames[n]}: ${s} / 7`)
@@ -1324,7 +1330,9 @@ ${sep}
 
 Примечания студента / Notes: ${notes}
 
-Время подачи / 提交時間: ${now}
+Время начала / 開始時間 / Start: ${startStr}
+Время отправки / 提交時間 / Submitted: ${submitStr}
+Длительность / 用時 / Duration: ${durStr}
 
 Ру́сский язы́к · Уро́ки 9–16 · 中原大學`;
 
@@ -1335,9 +1343,24 @@ ${sep}
     russian_name: ruName,
     notes: notes,
     total_score: `${t} / ${MAX} (${pct}%) — ${grade}`,
+    total_points: `${t} / ${MAX}`,
+    percent: `${pct}%`,
     grade: grade,
     breakdown: breakdownLines,
     full_body: fullBody,
+    start_time: startStr,
+    submit_time: submitStr,
+    duration: durStr,
+    score1: `${scores[1]} / 7`,
+    score2: `${scores[2]} / 7`,
+    score3: `${scores[3]} / 7`,
+    score4: `${scores[4]} / 7`,
+    score5: `${scores[5]} / 7`,
+    score6: `${scores[6]} / 7`,
+    score7: `${scores[7]} / 7`,
+    score8: `${scores[8]} / 7`,
+    score9: `${scores[9]} / 7`,
+    score10:`${scores[10]} / 7`,
     to_email: email,
     cc_email: 'collegeorient@gmail.com',
   });
@@ -1350,8 +1373,8 @@ async function sendViaEmailJS(params){
 
   try{
     const res = await emailjs.send(
-      'collegeorient',       // Service ID
-      'template_p4kk8bt',   // Template ID
+      'collegeorient',          // Service ID
+      'template_ioqj3pv',       // Template ID
       params
     );
     if(res.status===200){
